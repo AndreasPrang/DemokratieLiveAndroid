@@ -1,5 +1,6 @@
 package de.isolute.demokratielive;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    button.setText("456");
+                    startActivity(new Intent(getContext(), VideoActivity.class));
                 }
             });
 
