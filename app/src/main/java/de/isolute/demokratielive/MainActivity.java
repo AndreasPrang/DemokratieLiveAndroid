@@ -20,6 +20,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.List;
+
+
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        EventsModel.getInstance().loadData();
     }
 
 
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return EventsModel.getInstance().numberOfStations();
         }
 
         @Override
@@ -162,8 +168,9 @@ public class MainActivity extends AppCompatActivity {
                     return "SECTION 2";
                 case 2:
                     return "SECTION 3";
+                default:
+                    return "default";
             }
-            return null;
         }
     }
 }
