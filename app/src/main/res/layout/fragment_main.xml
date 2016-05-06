@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.isolute.demokratielive.MainActivity$PlaceholderFragment">
+    tools:context="de.isolute.demokratielive.MainActivity$PlaceholderFragment"
+    android:id="@+id/stationViewId">
 
     <TextView
         android:id="@+id/section_label"

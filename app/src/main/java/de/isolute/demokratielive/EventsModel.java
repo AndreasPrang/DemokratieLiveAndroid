@@ -9,6 +9,7 @@ public class EventsModel {
     private static EventsModel instance;
 
     public static JSONObject stations;
+    public static MainActivity mainActivity;
 
     public static void initInstance()
     {
@@ -47,6 +48,7 @@ public class EventsModel {
     }
 
     public void loadData() {
-        Json.getJson("http://demokratielive.org/API/Apps/events.php");
+        new RetrieveJsonTask().execute("http://demokratielive.org/API/Apps/events.php");
     }
+
 }

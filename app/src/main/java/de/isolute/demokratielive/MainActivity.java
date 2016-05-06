@@ -1,7 +1,9 @@
 package de.isolute.demokratielive;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.TextView;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,8 +71,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         EventsModel.getInstance().loadData();
+        EventsModel.getInstance().mainActivity = this;
     }
 
+    public void updateViewPager() {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        //mViewPager.getAdapter().notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,11 +135,24 @@ public class MainActivity extends AppCompatActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
+            JSONObject stations = EventsModel.getInstance().stations;
+            if (stations != null) {
+                String key = stations.keys().next();
+                textView.setText(key);
+            }
+
             final Button button = (Button) rootView.findViewById(R.id.button);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getContext(), VideoActivity.class));
+
+                    Intent intent = new Intent(getContext(), VideoActivity.class);
+//                    EditText editText = (EditText) findViewById(R.id.edit_message);
+//                    String message = editText.getText().toString();
+                    VideoActivity.stationKey = "MH";
+                    //intent.putExtra("MH", VideoActivity.stationKey);
+                    startActivity(intent);
                 }
             });
 

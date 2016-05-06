@@ -1,6 +1,7 @@
 package de.isolute.demokratielive;
 
 import android.os.AsyncTask;
+import android.support.v4.view.ViewPager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,15 +20,6 @@ import java.net.URL;
 /**
  * Created by aprang on 04.05.16.
  */
-public class Json {
-
-    public static void getJson(String url){
-
-        new RetrieveJsonTask().execute(url);
-    }
-}
-
-
 class RetrieveJsonTask extends AsyncTask<String, Void, JSONObject> {
 
     private Exception exception;
@@ -74,5 +66,10 @@ class RetrieveJsonTask extends AsyncTask<String, Void, JSONObject> {
 
     protected void onPostExecute(JSONObject jsonObject) {
         EventsModel.getInstance().stations = jsonObject;
+        MainActivity mainActivity = EventsModel.getInstance().mainActivity;
+        mainActivity.updateViewPager();
+
+        ViewPager mViewPager = (ViewPager) mainActivity.findViewById(R.id.container);
+        mViewPager.getAdapter().notifyDataSetChanged();
     }
 }

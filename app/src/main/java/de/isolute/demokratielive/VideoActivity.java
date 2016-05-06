@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import java.net.URI;
+import java.net.URL;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -36,6 +39,7 @@ public class VideoActivity extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private VideoView videoView;
+    public static String stationKey;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -93,11 +97,14 @@ public class VideoActivity extends AppCompatActivity {
 
         mVisible = true;
         videoView = (VideoView) findViewById(R.id.videoView);
-
-        videoView.setVideoURI(Uri.parse("https://walterebert.com/playground/video/hls/sintel-trailer.m3u8"));
-
         videoView.setMediaController(new MediaController(this));
+        startStream();
+    }
 
+    public void startStream() {
+        if (stationKey == "Marzahn-Hellersdorf") stationKey = "MH";
+        Uri uri = Uri.parse("http://stream.demokratielive.org/HLS/" + stationKey + "/livestream.m3u8");
+        videoView.setVideoURI(uri);
         videoView.start();
     }
 
