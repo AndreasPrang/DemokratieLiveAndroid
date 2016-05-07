@@ -3,6 +3,7 @@ package de.isolute.demokratielive;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,12 +22,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.AbsoluteLayout;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -112,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        public String stationKey = "";
 
         public PlaceholderFragment() {
         }
@@ -131,14 +145,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            Integer sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(getString(R.string.section_format, sectionNumber));
+
+            if (EventsModel.getInstance().stations == null) return rootView;
 
             JSONObject stations = EventsModel.getInstance().stations;
-            if (stations != null) {
-                String key = stations.keys().next();
-                textView.setText(key);
+            Iterator<String> keysIterator = EventsModel.getInstance().stations.keys();
+            List<String> stationKeys = new ArrayList<String>();
+            while (keysIterator.hasNext())
+                stationKeys.add(keysIterator.next());
+
+
+
+
+            ArrayList<String> elements = new ArrayList<String>();
+
+            stationKey = stationKeys.get(sectionNumber - 1);
+            textView.setText(stationKey);
+
+            try {
+                JSONArray events = stations.getJSONArray(stationKey);
+                for (int i = 0; i < events.length(); i++) {
+                    JSONObject event = events.getJSONObject(i);
+                    elements.add(event.getString("date") + " - " + event.getString("name"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
             final Button button = (Button) rootView.findViewById(R.id.button);
@@ -151,11 +187,22 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getContext(), VideoActivity.class);
 //                    EditText editText = (EditText) findViewById(R.id.edit_message);
 //                    String message = editText.getText().toString();
+
                     VideoActivity.stationKey = "MH";
                     //intent.putExtra("MH", VideoActivity.stationKey);
                     startActivity(intent);
                 }
             });
+
+            HeadRequest headRequest = new HeadRequest();
+            headRequest.button = button;
+            headRequest.stationKey = stationKey;
+            headRequest.execute("");
+
+
+            ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(rootView.getContext(), R.layout.list_view_main, elements);
+            ListView listView = (ListView)rootView.findViewById(R.id.listView);
+            listView.setAdapter(listViewAdapter);
 
             return rootView;
         }
