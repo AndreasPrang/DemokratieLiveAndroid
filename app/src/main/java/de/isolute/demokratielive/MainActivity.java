@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             final Button button = (Button) rootView.findViewById(R.id.button);
+            button.setText("Livestream Starten");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
