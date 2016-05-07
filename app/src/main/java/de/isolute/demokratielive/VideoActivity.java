@@ -102,7 +102,7 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     public void startStream() {
-        if (stationKey == "Marzahn-Hellersdorf") stationKey = "MH";
+        if (stationKey.equals("Marzahn-Hellersdorf")) stationKey = "MH";
         Uri uri = Uri.parse("http://stream.demokratielive.org/HLS/" + stationKey + "/livestream.m3u8");
         //uri = Uri.parse("https://walterebert.com/playground/video/hls/sintel-trailer.m3u8");
         videoView.setVideoURI(uri);

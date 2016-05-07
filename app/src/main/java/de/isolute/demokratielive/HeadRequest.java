@@ -72,7 +72,7 @@ class HeadRequest extends AsyncTask<String, Void, String> {
 
             System.out.println("Now: " + currentDate.toString() + " - Header: " + headerDate.toString());
 
-            if (headerUnixTime + 60000L < currentUnixTime) {
+            if (headerUnixTime + 60000L > currentUnixTime) {
                 button.setEnabled(true);
                 button.setText("Livestream Starten");
             }

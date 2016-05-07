@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            Integer sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+            final Integer sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
 
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 //                    EditText editText = (EditText) findViewById(R.id.edit_message);
 //                    String message = editText.getText().toString();
 
-                    VideoActivity.stationKey = "MH";
+                    VideoActivity.stationKey = stationKey;
                     //intent.putExtra("MH", VideoActivity.stationKey);
                     startActivity(intent);
                 }
