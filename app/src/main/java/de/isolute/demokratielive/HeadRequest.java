@@ -4,10 +4,8 @@ package de.isolute.demokratielive;
  * Created by aprang on 07.05.16.
  */
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Button;
-import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -17,14 +15,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.net.URI;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 class HeadRequest extends AsyncTask<String, Void, String> {
 
