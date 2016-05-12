@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startService(new Intent(this, NotificationService.class));
+        if (!NotificationService.isRunning())
+            startService(new Intent(this, NotificationService.class));
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -138,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
                 stationKeys.add(keysIterator.next());
 
 
-
-
             ArrayList<String> elements = new ArrayList<String>();
 
             stationKey = stationKeys.get(sectionNumber - 1);
@@ -180,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(rootView.getContext(), R.layout.list_view_main, elements);
-            ListView listView = (ListView)rootView.findViewById(R.id.listView);
+            ListView listView = (ListView) rootView.findViewById(R.id.listView);
             listView.setAdapter(listViewAdapter);
 
             return rootView;
